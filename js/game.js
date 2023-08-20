@@ -46,7 +46,6 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
     let winner = ''
     let loser = ''
 
-    playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1).toLowerCase()
     if (playerSelection === computerSelection) {
         console.log(playerSelection, computerSelection)
         return "It's a tie!"
@@ -76,4 +75,36 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
 
         return result + " " + winner + " beats " + loser
     }
+}
+
+/*
+game():
+play the game 5 times, keeping a tally of who wins and reporting a winner.
+tie-breaker implemeted
+
+no input, but gets input internally for player choice
+runs a round of the game, announcing winner each round
+updates tally
+repeats till 5 games are reached and no tie in score
+output winner of game
+
+Loop
+    Get user choice
+    Play a round
+    Announce result
+    Update Tally
+Repeat until 5 games and no tie overall
+*/
+
+function getPlayerChoice() {
+    const options = ['Rock', 'Paper', 'Scissors']
+
+    let playerChoice = prompt('Choose: Rock, Paper or Scissors?')
+    playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase()
+
+    while (!options.includes(playerChoice)) {
+        playerChoice = prompt('Please make a valid choice: Rock, Paper or Scissors?')
+        playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase()
+    }
+    return playerChoice
 }
