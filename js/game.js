@@ -48,7 +48,6 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
     let loserChoice = ''
 
     if (playerSelection === computerSelection) {
-        console.log(playerSelection, computerSelection)
         return {
             announce: "It's a tie!",
             winner: 'tie'
@@ -64,8 +63,6 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
             case 'Scissors':
                 check = 'Paper';
                 break;
-            default:
-                return "Invalid choice, please choose 'Rock', 'Paper' or 'Scissors'."
         }
         if (computerSelection === check) {
             result = WON
