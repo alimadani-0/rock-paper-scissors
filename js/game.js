@@ -41,14 +41,18 @@ item before loses, item after wins, if past array index loop (modulus)
 function playRound(playerSelection, computerSelection = getComputerChoice()) {
     const WON = 'You Win!'
     const LOST = 'You Lose!'
+    let winner = null
     let check = ''
     let result = ''
-    let winner = ''
-    let loser = ''
+    let winnerChoice = ''
+    let loserChoice = ''
 
     if (playerSelection === computerSelection) {
         console.log(playerSelection, computerSelection)
-        return "It's a tie!"
+        return {
+            announce: "It's a tie!",
+            winner: 'tie'
+        }
     } else {
         switch (playerSelection) {
             case 'Rock':
@@ -65,15 +69,20 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
         }
         if (computerSelection === check) {
             result = WON
-            winner = playerSelection
-            loser = computerSelection
+            winnerChoice = playerSelection
+            loserChoice = computerSelection
+            winner = 'player'
         } else {
             result = LOST
-            winner = computerSelection
-            loser = playerSelection
+            winnerChoice = computerSelection
+            loserChoice = playerSelection
+            winner = 'computer'
         }
 
-        return result + " " + winner + " beats " + loser
+        return {
+            announce: result + " " + winnerChoice + " beats " + loserChoice,
+            winner: winner
+        }
     }
 }
 
@@ -88,12 +97,12 @@ updates tally
 repeats till 5 games are reached and no tie in score
 output winner of game
 
-Loop
-    Get user choice
-    Play a round
-    Announce result
-    Update Tally
-Repeat until 5 games and no tie overall
+[X] Loop
+[X]     Get user choice
+[X]     Play a round
+[X]     Announce result
+[X]     Update Tally
+[X] Repeat until 5 games and no tie overall
 */
 
 function getPlayerChoice() {
@@ -107,4 +116,26 @@ function getPlayerChoice() {
         playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase()
     }
     return playerChoice
+}
+
+function game() {
+    let rounds = 0
+    let gameOver = false
+    let playerScore = 0
+    let computerScore = 0
+
+    while (!gameOver) {
+        result = playRound(getPlayerChoice(), getComputerChoice())
+        console.log(result.announce)
+        
+        result.winner === 'tie' ? null : (result.winner === 'player' ? playerScore += 1 : computerScore += 1)
+        
+        rounds += 1
+        rounds >= 5 && playerScore != computerScore ? gameOver = true : gameOver = false
+    }
+
+    console.log('Game Over!')
+    playerScore > computerScore
+        ? console.log('Congratulations! You won this game of Rock, Paper, Scissors! See you next time!')
+        : console.log('You lost this game of Rock, Paper, Scissors. Better luck next time!')
 }
