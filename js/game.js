@@ -1,3 +1,26 @@
+function updateScores(resultObject) {
+    let gameOver = false;
+    const announce = document.querySelector('div#announce');
+    
+    if (resultObject.winner === 'tie') {
+        announce.textContent = resultObject.announce
+    } else {
+        const winner = document.querySelector(`#${resultObject.winner}`);
+        let winnerScoreText = winner.textContent;
+        const winnerScore = parseInt(winnerScoreText.slice(-1)) + 1;
+        winner.textContent 
+            = winnerScoreText.slice(0, -1) 
+            + winnerScore;
+        if (winnerScore === 5) {
+            gameOver = true;
+            resultObject.winner === 'player' 
+                ? announce.textContent = 'Congratulations! You won this game of Rock, Paper, Scissors! See you next time!'
+                : announce.textContent = 'You lost this game of Rock, Paper, Scissors. Better luck next time!';
+        } else announce.textContent = resultObject.announce;
+    }
+    return gameOver
+}
+
 function getComputerChoice() {
     let generatedValue = Math.floor(Math.random() * 3) + 1
     switch (generatedValue) {
@@ -10,7 +33,8 @@ function getComputerChoice() {
     }
 }
 
-function playRound(playerSelection, computerSelection = getComputerChoice()) {
+function playRound(e) {
+    const computerSelection = getComputerChoice()
     const WON = 'You Win!'
     const LOST = 'You Lose!'
     let winner = null
@@ -18,9 +42,12 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
     let result = ''
     let winnerChoice = ''
     let loserChoice = ''
+    let resultObject = {}
+
+    let playerSelection = this.textContent
 
     if (playerSelection === computerSelection) {
-        return {
+        resultObject = {
             announce: "It's a tie!",
             winner: 'tie'
         }
@@ -48,10 +75,17 @@ function playRound(playerSelection, computerSelection = getComputerChoice()) {
             winner = 'computer'
         }
 
-        return {
+        resultObject = {
             announce: result + " " + winnerChoice + " beats " + loserChoice,
             winner: winner
         }
+    }
+
+    const gameOver = updateScores(resultObject);
+    if (gameOver) {
+        playerOptions.forEach(option =>
+            option.removeEventListener('click', playRound)    
+        )
     }
 }
 
@@ -88,4 +122,10 @@ function game() {
     playerScore > computerScore
         ? console.log('Congratulations! You won this game of Rock, Paper, Scissors! See you next time!')
         : console.log('You lost this game of Rock, Paper, Scissors. Better luck next time!')
-}
+    }
+    
+
+const playerOptions = document.querySelectorAll('#playerOptions button');
+playerOptions.forEach(option => 
+    option.addEventListener('click', playRound)
+);
