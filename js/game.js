@@ -87,43 +87,7 @@ function playRound(e) {
             option.removeEventListener('click', playRound)    
         )
     }
-}
-
-function getPlayerChoice() {
-    const options = ['Rock', 'Paper', 'Scissors']
-
-    let playerChoice = prompt('Choose: Rock, Paper or Scissors?')
-    playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase()
-
-    while (!options.includes(playerChoice)) {
-        playerChoice = prompt('Please make a valid choice: Rock, Paper or Scissors?')
-        playerChoice = playerChoice[0].toUpperCase() + playerChoice.slice(1).toLowerCase()
-    }
-    return playerChoice
-}
-
-function game() {
-    let rounds = 0
-    let gameOver = false
-    let playerScore = 0
-    let computerScore = 0
-
-    while (!gameOver) {
-        result = playRound(getPlayerChoice(), getComputerChoice())
-        console.log(result.announce)
-        
-        result.winner === 'tie' ? null : (result.winner === 'player' ? playerScore += 1 : computerScore += 1)
-        
-        rounds += 1
-        rounds >= 5 && playerScore != computerScore ? gameOver = true : gameOver = false
-    }
-
-    console.log('Game Over!')
-    playerScore > computerScore
-        ? console.log('Congratulations! You won this game of Rock, Paper, Scissors! See you next time!')
-        : console.log('You lost this game of Rock, Paper, Scissors. Better luck next time!')
-    }
-    
+} 
 
 const playerOptions = document.querySelectorAll('#playerOptions button');
 playerOptions.forEach(option => 
