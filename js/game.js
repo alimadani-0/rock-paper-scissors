@@ -43,6 +43,56 @@ function loadGameView() {
     body.appendChild(announce);
 }
 
+function loadRoundSettingView() {
+    // <input type="button" id='first-to' value="First To"/>
+    const body = document.querySelector('body');
+    body.id = 'set-round';
+
+    const title = document.createElement('div');
+    title.id = 'title';
+    body.appendChild(title);
+    
+    const titleText = document.createElement('h1');
+    titleText.textContent = 'How Would You Like To Play?';
+    title.appendChild(titleText);
+
+    const roundLimit = document.createElement('div');
+    roundLimit.id = 'round-limit';
+    body.appendChild(roundLimit);
+
+    for (const button of ['best-of', 'first-to']) {
+        const element = document.createElement('button');
+        element.id = button;
+        element.type = 'button';
+        element.textContent = button
+            .split('-')
+            .map(word => word.slice(0, 1).toUpperCase() + word.slice(1))
+            .join(' ');
+        roundLimit.appendChild(element);
+    };
+
+    const roundCount = document.createElement('div');
+    roundCount.id = 'round-count';
+    body.appendChild(roundCount);
+
+    for (const button of ['3', '5', '7']) {
+        const element = document.createElement('button');
+        element.id = button;
+        element.type = 'button';
+        element.textContent = button;
+        roundCount.appendChild(element);
+    };
+
+    const begin = document.createElement('div');
+    begin.id = 'begin';
+    body.appendChild(begin);
+
+    const beginButton = document.createElement('button');
+    beginButton.textContent = 'Begin';
+    beginButton.disabled = true;
+    begin.appendChild(beginButton);
+}
+
 function updateScores(resultObject) {
     let gameOver = false;
     const announce = document.querySelector('div#announce');
@@ -134,7 +184,7 @@ function playRound(e) {
     }
 } 
 
-loadGameView();
+loadRoundSettingView();
 
 const playerOptions = document.querySelectorAll('#playerOptions button');
 playerOptions.forEach(option => 
