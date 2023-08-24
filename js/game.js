@@ -1,3 +1,48 @@
+function loadGameView() {
+    const body = document.querySelector('body');
+    body.id = 'game';
+
+    const scores = document.createElement('div');
+    scores.id = 'scores';
+    body.appendChild(scores);
+
+    const playerScore = document.createElement('div');
+    playerScore.id = 'player';
+    playerScore.textContent = 'Player Score: 0'
+    scores.appendChild(playerScore);
+
+    const computerScore = document.createElement('div');
+    computerScore.id = 'computer';
+    computerScore.textContent = 'Computer Score: 0'
+    scores.appendChild(computerScore);
+
+    const playerOptions = document.createElement('div');
+    playerOptions.id = 'playerOptions';
+    body.appendChild(playerOptions);
+
+    const rockButton = document.createElement('button');
+    rockButton.id = 'Rock';
+    rockButton.classList.add('playerOption');
+    rockButton.textContent = 'Rock';
+    playerOptions.appendChild(rockButton);
+    
+    const paperButton = document.createElement('button');
+    paperButton.id = 'Paper';
+    paperButton.classList.add('playerOption');
+    paperButton.textContent = 'Paper';
+    playerOptions.appendChild(paperButton);
+    
+    const scissorsButton = document.createElement('button');
+    scissorsButton.id = 'Scissors';
+    scissorsButton.classList.add('playerOption');
+    scissorsButton.textContent = 'Scissors';
+    playerOptions.appendChild(scissorsButton);
+
+    const announce = document.createElement('div');
+    announce.id = 'announce';
+    body.appendChild(announce);
+}
+
 function updateScores(resultObject) {
     let gameOver = false;
     const announce = document.querySelector('div#announce');
@@ -88,6 +133,8 @@ function playRound(e) {
         )
     }
 } 
+
+loadGameView();
 
 const playerOptions = document.querySelectorAll('#playerOptions button');
 playerOptions.forEach(option => 
