@@ -1,11 +1,11 @@
+const body = document.querySelector('body');
+
 function deleteView() {
-    const body = document.querySelector('body');
     body.replaceChildren();
 }
 
 function setGameView() {
     deleteView();
-    const body = document.querySelector('body');
     body.id = 'game';
 
     const scores = document.createElement('div');
@@ -56,7 +56,6 @@ function setGameView() {
 
 function setRoundSettingView() {
     deleteView();
-    const body = document.querySelector('body');
     body.id = 'set-round';
 
     const title = document.createElement('div');
@@ -107,7 +106,6 @@ function setRoundSettingView() {
 function setRoundOption(e) {
     this.disabled = true;
     const options = this.parentNode.id;
-    const body = document.querySelector('body');
     const oldOption = body.getAttribute(options);
     if (oldOption) {
         oldOptionButton = document.getElementById(oldOption);
