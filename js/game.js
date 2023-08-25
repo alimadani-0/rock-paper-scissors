@@ -1,5 +1,9 @@
 const body = document.querySelector('body');
-const roundSettings = {}
+const roundSettings = {};
+const scores = {
+    player: 0,
+    computer: 0
+};
 
 function deleteView() {
     body.replaceChildren();
@@ -8,6 +12,10 @@ function deleteView() {
 function setGameView() {
     deleteView();
     body.id = 'game';
+
+    if (roundSettings['round-limit'] === 'best-of') {
+        roundSettings['round'] = 0;
+    };
 
     const scores = document.createElement('div');
     scores.id = 'scores';
@@ -122,29 +130,6 @@ function setRoundOption(e) {
     };
 }
 
-function updateScore(resultObject) {
-    let gameOver = false;
-    const announce = document.getElementById('announce');
-    
-    if (resultObject.winner === 'tie') {
-        announce.textContent = resultObject.announce
-    } else {
-        const winner = document.getElementById(resultObject.winner);
-        let winnerScoreText = winner.textContent;
-        const winnerScore = parseInt(winnerScoreText.slice(-1)) + 1;
-        winner.textContent 
-            = winnerScoreText.slice(0, -1) 
-            + winnerScore;
-        if (winnerScore === 5) {
-            gameOver = true;
-            resultObject.winner === 'player' 
-                ? announce.textContent = 'Congratulations! You won this game of Rock, Paper, Scissors! See you next time!'
-                : announce.textContent = 'You lost this game of Rock, Paper, Scissors. Better luck next time!';
-        } else announce.textContent = resultObject.announce;
-    }
-    return gameOver
-}
-
 function getComputerChoice() {
     let generatedValue = Math.floor(Math.random() * 3) + 1
     switch (generatedValue) {
@@ -157,25 +142,10 @@ function getComputerChoice() {
     }
 }
 
-function playRound(e) {
-    const computerSelection = getComputerChoice()
-    const WON = 'You Win!'
-    const LOST = 'You Lose!'
-    let winner = null
-    let check = ''
-    let result = ''
-    let winnerChoice = ''
-    let loserChoice = ''
-    let resultObject = {}
-
-    let playerSelection = this.textContent
-
-    if (playerSelection === computerSelection) {
-        resultObject = {
-            announce: "It's a tie!",
-            winner: 'tie'
-        }
-    } else {
+function checkRoundWinner(playerSelection, computerSelection) {
+    let check = '';
+    if (playerSelection === computerSelection) return { winner: 'tie'};
+    else {
         switch (playerSelection) {
             case 'Rock':
                 check = 'Scissors';
@@ -187,32 +157,95 @@ function playRound(e) {
                 check = 'Paper';
                 break;
         }
-        if (computerSelection === check) {
-            result = WON
-            winnerChoice = playerSelection
-            loserChoice = computerSelection
-            winner = 'player'
-        } else {
-            result = LOST
-            winnerChoice = computerSelection
-            loserChoice = playerSelection
-            winner = 'computer'
-        }
+        if (computerSelection === check) return {
+            winner: 'player',
+            winnerSelection: playerSelection,
+            loserSelection: computerSelection
+        };
+        else return {
+            winner: 'computer',
+            winnerSelection: computerSelection,
+            loserSelection: playerSelection
+        };
+    };
+}
 
-        resultObject = {
-            announce: result + " " + winnerChoice + " beats " + loserChoice,
-            winner: winner
+function updateScore(roundWinner) {
+    if (roundWinner !== 'tie') {
+        const winner = document.getElementById(roundWinner);
+        const winnerScoreText = winner.textContent;
+        scores[roundWinner]++;
+        const winnerScore = scores[roundWinner];
+        winner.textContent
+            = winnerScoreText.slice(0, -1)
+            + winnerScore;
+    };
+    if (roundSettings['round-limit'] === 'best-of') {
+        roundSettings['round']++
+    };
+}
+
+function isGameOver() {
+    const playerScore = scores.player;
+    const computerScore = scores.computer;
+    if (roundSettings['round-limit'] === 'best-of') {
+        if (roundSettings['round'] >= roundSettings['round-count']) {
+            if (playerScore !== computerScore) return true;
         }
+    } else {
+        const roundCount = parseInt(roundSettings['round-count']);
+        if (
+            playerScore === roundCount
+            || computerScore === roundCount
+        ) return true;
     }
+    return false;
+}
 
-    const gameOver = updateScore(resultObject);
+function setRoundAnnouncement(gameOver, resultObject) {
+    const WON = 'You Win!';
+    const LOST = 'You Lose!';
+    const announce = document.getElementById('announce');
+    let announceText = '';
     if (gameOver) {
-        playerOptionsButtons = document.querySelectorAll('#playerOptions button')
-        playerOptionsButtons.forEach(option =>
-            option.removeEventListener('click', playRound)    
-        )
-    }
-} 
+        scores.player > scores.computer
+            ? announceText = 'Congratulations! You won this game of Rock, Paper, Scissors! See you next time!'
+            : announceText = 'You lost this game of Rock, Paper, Scissors. Better luck next time!';
+    } else {
+        if (resultObject.winner !== 'tie') {
+            resultObject.winner === 'player'
+                ? announceText = WON
+                : announceText = LOST;
+            announceText
+                += ' '
+                + resultObject.winnerSelection
+                + ' beats '
+                + resultObject.loserSelection;
+        } else {
+            announceText = 'It\'s a tie!';
+        }
+    };
+    announce.textContent = announceText;
+}
+
+function disablePlayerOptions () {
+    playerOptionsButtons = document.querySelectorAll('#playerOptions button');
+    playerOptionsButtons.forEach(option =>
+        option.removeEventListener('click', playRound)
+    );
+}
+
+function playRound(e) {
+    const computerSelection = getComputerChoice();
+    const playerSelection = this.textContent;
+
+    const resultObject = checkRoundWinner(playerSelection, computerSelection);
+    updateScore(resultObject.winner);
+    const gameOver = isGameOver();
+    setRoundAnnouncement(gameOver, resultObject);
+
+    if (gameOver) disablePlayerOptions();
+}
 
 setRoundSettingView();
 
