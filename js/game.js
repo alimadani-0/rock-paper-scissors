@@ -1,4 +1,5 @@
 const body = document.querySelector('body');
+const roundSettings = {}
 
 function deleteView() {
     body.replaceChildren();
@@ -106,15 +107,15 @@ function setRoundSettingView() {
 function setRoundOption(e) {
     this.disabled = true;
     const options = this.parentNode.id;
-    const oldOption = body.getAttribute(options);
+    const oldOption = roundSettings[options];
     if (oldOption) {
         oldOptionButton = document.getElementById(oldOption);
         oldOptionButton.disabled = false;
     };
-    body.setAttribute(options, this.id);
+    roundSettings[options] = this.id;
     if (
-        body.getAttribute('round-count')
-        && body.getAttribute('round-limit')
+        roundSettings['round-count']
+        && roundSettings['round-limit']
     ) {
         const beginButton = document.querySelector('#begin button');
         beginButton.disabled = false;
