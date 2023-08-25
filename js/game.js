@@ -1,4 +1,10 @@
+function deleteView() {
+    const body = document.querySelector('body');
+    body.replaceChildren();
+}
+
 function setGameView() {
+    deleteView();
     const body = document.querySelector('body');
     body.id = 'game';
 
@@ -44,7 +50,7 @@ function setGameView() {
 }
 
 function setRoundSettingView() {
-    // <input type="button" id='first-to' value="First To"/>
+    deleteView();
     const body = document.querySelector('body');
     body.id = 'set-round';
 
