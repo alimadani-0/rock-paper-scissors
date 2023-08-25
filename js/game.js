@@ -93,6 +93,25 @@ function loadRoundSettingView() {
     begin.appendChild(beginButton);
 }
 
+function lockOption(e) {
+    this.disabled = true;
+    const options = this.parentNode.id;
+    const body = document.querySelector('body');
+    const oldOption = body.getAttribute(options);
+    if (oldOption) {
+        oldOptionButton = document.getElementById(oldOption);
+        oldOptionButton.disabled = false;
+    };
+    body.setAttribute(options, this.id);
+    if (
+        body.getAttribute('round-count')
+        && body.getAttribute('round-limit')
+    ) {
+        const beginButton = document.querySelector('#begin button');
+        beginButton.disabled = false;
+    };
+}
+
 function updateScores(resultObject) {
     let gameOver = false;
     const announce = document.querySelector('div#announce');
@@ -189,4 +208,9 @@ loadRoundSettingView();
 const playerOptions = document.querySelectorAll('#playerOptions button');
 playerOptions.forEach(option => 
     option.addEventListener('click', playRound)
+);
+
+const roundOptions = document.querySelectorAll('#round-limit button, #round-count button');
+roundOptions.forEach(option =>
+    option.addEventListener('click', lockOption)
 );
