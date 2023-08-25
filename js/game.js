@@ -1,4 +1,4 @@
-function loadGameView() {
+function setGameView() {
     const body = document.querySelector('body');
     body.id = 'game';
 
@@ -43,7 +43,7 @@ function loadGameView() {
     body.appendChild(announce);
 }
 
-function loadRoundSettingView() {
+function setRoundSettingView() {
     // <input type="button" id='first-to' value="First To"/>
     const body = document.querySelector('body');
     body.id = 'set-round';
@@ -93,7 +93,7 @@ function loadRoundSettingView() {
     begin.appendChild(beginButton);
 }
 
-function lockOption(e) {
+function setRoundOption(e) {
     this.disabled = true;
     const options = this.parentNode.id;
     const body = document.querySelector('body');
@@ -112,7 +112,7 @@ function lockOption(e) {
     };
 }
 
-function updateScores(resultObject) {
+function updateScore(resultObject) {
     let gameOver = false;
     const announce = document.querySelector('div#announce');
     
@@ -195,7 +195,7 @@ function playRound(e) {
         }
     }
 
-    const gameOver = updateScores(resultObject);
+    const gameOver = updateScore(resultObject);
     if (gameOver) {
         playerOptions.forEach(option =>
             option.removeEventListener('click', playRound)    
@@ -203,7 +203,7 @@ function playRound(e) {
     }
 } 
 
-loadRoundSettingView();
+setRoundSettingView();
 
 const playerOptions = document.querySelectorAll('#playerOptions button');
 playerOptions.forEach(option => 
@@ -212,5 +212,5 @@ playerOptions.forEach(option =>
 
 const roundOptions = document.querySelectorAll('#round-limit button, #round-count button');
 roundOptions.forEach(option =>
-    option.addEventListener('click', lockOption)
+    option.addEventListener('click', setRoundOption)
 );
