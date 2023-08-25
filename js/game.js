@@ -123,12 +123,12 @@ function setRoundOption(e) {
 
 function updateScore(resultObject) {
     let gameOver = false;
-    const announce = document.querySelector('div#announce');
+    const announce = document.getElementById('announce');
     
     if (resultObject.winner === 'tie') {
         announce.textContent = resultObject.announce
     } else {
-        const winner = document.querySelector(`#${resultObject.winner}`);
+        const winner = document.getElementById(resultObject.winner);
         let winnerScoreText = winner.textContent;
         const winnerScore = parseInt(winnerScoreText.slice(-1)) + 1;
         winner.textContent 
