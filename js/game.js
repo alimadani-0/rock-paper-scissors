@@ -47,6 +47,11 @@ function setGameView() {
     const announce = document.createElement('div');
     announce.id = 'announce';
     body.appendChild(announce);
+
+    const playerOptionsButtons = document.querySelectorAll('#playerOptions button');
+    playerOptionsButtons.forEach(option =>
+    option.addEventListener('click', playRound)
+);
 }
 
 function setRoundSettingView() {
@@ -203,7 +208,8 @@ function playRound(e) {
 
     const gameOver = updateScore(resultObject);
     if (gameOver) {
-        playerOptions.forEach(option =>
+        playerOptionsButtons = document.querySelectorAll('#playerOptions button')
+        playerOptionsButtons.forEach(option =>
             option.removeEventListener('click', playRound)    
         )
     }
@@ -211,12 +217,10 @@ function playRound(e) {
 
 setRoundSettingView();
 
-const playerOptions = document.querySelectorAll('#playerOptions button');
-playerOptions.forEach(option => 
-    option.addEventListener('click', playRound)
-);
-
 const roundOptions = document.querySelectorAll('#round-limit button, #round-count button');
 roundOptions.forEach(option =>
     option.addEventListener('click', setRoundOption)
 );
+
+const beginButton = document.querySelector('#begin button');
+beginButton.addEventListener('click', setGameView)
