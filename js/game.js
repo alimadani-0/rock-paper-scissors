@@ -214,13 +214,9 @@ function updateRoundCounter() {
 
 function updateScore(roundWinner) {
     if (roundWinner !== 'tie') {
-        const winner = document.getElementById(roundWinner);
-        const winnerScoreText = winner.textContent;
         scores[roundWinner]++;
-        const winnerScore = scores[roundWinner];
-        winner.textContent
-            = winnerScoreText.slice(0, -1)
-            + winnerScore;
+        const winnerScore = document.getElementById(roundWinner + '-score');
+        winnerScore.textContent = scores[roundWinner];
     };
     if (roundSettings['round-limit'] === 'best-of') {
         roundSettings['round']++;
