@@ -1,6 +1,6 @@
 const body = document.querySelector('body');
-const roundSettings = {};
-const scores = {
+let roundSettings = {};
+let scores = {
     player: 0,
     computer: 0
 };
@@ -105,12 +105,17 @@ function setGameView() {
 
     const playerOptionsButtons = document.querySelectorAll('#playerOptions button');
     playerOptionsButtons.forEach(option =>
-    option.addEventListener('click', playRound)
-);
+        option.addEventListener('click', playRound)
+    );
 }
 
 function setRoundSettingView() {
     deleteView();
+    roundSettings = {};
+    scores = {
+        player: 0,
+        computer: 0
+    };
     body.id = 'set-round';
 
     const title = document.createElement('div');
@@ -156,6 +161,13 @@ function setRoundSettingView() {
     beginButton.textContent = 'Begin';
     beginButton.disabled = true;
     begin.appendChild(beginButton);
+
+    const roundOptions = document.querySelectorAll('#round-limit button, #round-count button');
+    roundOptions.forEach(option =>
+        option.addEventListener('click', setRoundOption)
+    );
+
+    beginButton.addEventListener('click', setGameView)
 }
 
 function setRoundOption(e) {
@@ -306,11 +318,3 @@ function playRound(e) {
 }
 
 setRoundSettingView();
-
-const roundOptions = document.querySelectorAll('#round-limit button, #round-count button');
-roundOptions.forEach(option =>
-    option.addEventListener('click', setRoundOption)
-);
-
-const beginButton = document.querySelector('#begin button');
-beginButton.addEventListener('click', setGameView)
