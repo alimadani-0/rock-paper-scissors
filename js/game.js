@@ -22,23 +22,48 @@ function setGameView() {
     scores.id = 'scores';
     body.appendChild(scores);
     
-    const playerScore = document.createElement('div');
-    playerScore.id = 'player';
-    playerScore.textContent = 'Player Score: 0'
-    scores.appendChild(playerScore);
+    for (const side of ['player', 'computer']) {
+        const container = document.createElement('div');
+        container.id = side;
+        container.classList.add('score-container');
+        scores.appendChild(container);
+
+        const scoreInfo = document.createElement('div');
+        scoreInfo.classList.add('score-info');
+        scoreInfo.textContent = capitalizeWord(side) + ' Score';
+        container.appendChild(scoreInfo);
+
+        const score = document.createElement('div');
+        score.id = side + '-score';
+        score.classList.add('score');
+        score.textContent = '0';
+        container.appendChild(score);
+    };
     
     if (roundSettings['round-limit'] === 'best-of') {
         roundSettings['round'] = 0;
-        const roundCount = document.createElement('div');
-        roundCount.id = 'roundCount';
-        roundCount.textContent = 'Round 0';
-        scores.appendChild(roundCount);
-    };
+        const roundContainer = document.createElement('div');
+        roundContainer.id = 'round-container';
+        scores.insertBefore(
+            roundContainer, document.getElementById('computer')
+        );
 
-    const computerScore = document.createElement('div');
-    computerScore.id = 'computer';
-    computerScore.textContent = 'Computer Score: 0'
-    scores.appendChild(computerScore);
+        const roundText = document.createElement('div');
+        roundText.id = 'round-text';
+        roundText.textContent = 'ROUND';
+        roundContainer.appendChild(roundText);
+
+        const round = document.createElement('div');
+        round.id = 'round-count';
+        round.textContent = '0';
+        roundContainer.appendChild(round);
+
+        const extraRound = document.createElement('div');
+        extraRound.id = 'extra-round';
+        extraRound.textContent = 'TIE BREAKER!';
+        extraRound.hidden = true;
+        roundContainer.appendChild(extraRound);
+    };
 
     const playerOptions = document.createElement('div');
     playerOptions.id = 'playerOptions';
@@ -49,7 +74,7 @@ function setGameView() {
     rockButton.classList.add('playerOption');
     rockButton.textContent = 'Rock';
     playerOptions.appendChild(rockButton);
-    
+
     const paperButton = document.createElement('button');
     paperButton.id = 'Paper';
     paperButton.classList.add('playerOption');
@@ -180,7 +205,7 @@ function checkRoundWinner(playerSelection, computerSelection) {
 }
 
 function updateRoundCounter() {
-    const roundCount = document.getElementById('roundCount');
+    const roundCount = document.getElementById('round-count');
     const roundCountText = roundCount.textContent;
     roundCount.textContent
         = roundCountText.slice(0, -1)
