@@ -74,23 +74,13 @@ function setGameView() {
     playerOptions.id = 'playerOptions';
     body.appendChild(playerOptions);
 
-    const rockButton = document.createElement('button');
-    rockButton.id = 'Rock';
-    rockButton.classList.add('playerOption');
-    rockButton.textContent = 'Rock';
-    playerOptions.appendChild(rockButton);
-
-    const paperButton = document.createElement('button');
-    paperButton.id = 'Paper';
-    paperButton.classList.add('playerOption');
-    paperButton.textContent = 'Paper';
-    playerOptions.appendChild(paperButton);
-    
-    const scissorsButton = document.createElement('button');
-    scissorsButton.id = 'Scissors';
-    scissorsButton.classList.add('playerOption');
-    scissorsButton.textContent = 'Scissors';
-    playerOptions.appendChild(scissorsButton);
+    for (const option of ['rock', 'paper', 'scissors']) {
+        const button = document.createElement('button');
+        button.id = capitalizeWord(option);
+        button.classList.add('playerOption');
+        button.textContent = capitalizeWord(option);
+        playerOptions.appendChild(button);
+    };
 
     const announce = document.createElement('div');
     announce.id = 'announce';
