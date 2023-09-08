@@ -10,6 +10,11 @@ function capitalizeWord(word) {
         + word.slice(1)
 }
 
+function activateRestartButton() {
+    const restart = document.getElementById('restart-button');
+    restart.hidden = false;
+}
+
 function deleteView() {
     body.replaceChildren();
 }
@@ -90,6 +95,13 @@ function setGameView() {
     const announce = document.createElement('div');
     announce.id = 'announce';
     body.appendChild(announce);
+
+    const restart = document.createElement('button');
+    restart.id = 'restart-button';
+    restart.textContent = 'Play Again';
+    restart.hidden = true;
+    body.appendChild(restart);
+    restart.addEventListener('click', setRoundSettingView)
 
     const playerOptionsButtons = document.querySelectorAll('#playerOptions button');
     playerOptionsButtons.forEach(option =>
@@ -287,7 +299,10 @@ function playRound(e) {
     const gameOver = isGameOver();
     setRoundAnnouncement(gameOver, resultObject);
 
-    if (gameOver) disablePlayerOptions();
+    if (gameOver) {
+        disablePlayerOptions();
+        activateRestartButton();
+    }
 }
 
 setRoundSettingView();
