@@ -12,19 +12,23 @@ function deleteView() {
 function setGameView() {
     deleteView();
     body.id = 'game';
-
-    if (roundSettings['round-limit'] === 'best-of') {
-        roundSettings['round'] = 0;
-    };
-
+    
     const scores = document.createElement('div');
     scores.id = 'scores';
     body.appendChild(scores);
-
+    
     const playerScore = document.createElement('div');
     playerScore.id = 'player';
     playerScore.textContent = 'Player Score: 0'
     scores.appendChild(playerScore);
+    
+    if (roundSettings['round-limit'] === 'best-of') {
+        roundSettings['round'] = 0;
+        const roundCount = document.createElement('div');
+        roundCount.id = 'roundCount';
+        roundCount.textContent = 'Round 0';
+        scores.appendChild(roundCount);
+    };
 
     const computerScore = document.createElement('div');
     computerScore.id = 'computer';
@@ -170,6 +174,14 @@ function checkRoundWinner(playerSelection, computerSelection) {
     };
 }
 
+function updateRoundCounter() {
+    const roundCount = document.getElementById('roundCount');
+    const roundCountText = roundCount.textContent;
+    roundCount.textContent
+        = roundCountText.slice(0, -1)
+        + roundSettings['round'];
+}
+
 function updateScore(roundWinner) {
     if (roundWinner !== 'tie') {
         const winner = document.getElementById(roundWinner);
@@ -181,7 +193,8 @@ function updateScore(roundWinner) {
             + winnerScore;
     };
     if (roundSettings['round-limit'] === 'best-of') {
-        roundSettings['round']++
+        roundSettings['round']++;
+        updateRoundCounter();
     };
 }
 
