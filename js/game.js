@@ -234,6 +234,10 @@ function isGameOver() {
     if (roundSettings['round-limit'] === 'best-of') {
         if (roundSettings['round'] >= roundSettings['round-count']) {
             if (playerScore !== computerScore) return true;
+            else {
+                const extraRound = document.getElementById('extra-round');
+                extraRound.hidden = false;
+            }
         }
     } else {
         const roundCount = parseInt(roundSettings['round-count']);
