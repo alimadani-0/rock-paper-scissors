@@ -78,8 +78,11 @@ function setGameView() {
         const button = document.createElement('button');
         button.id = capitalizeWord(option);
         button.classList.add('playerOption');
-        button.textContent = capitalizeWord(option);
         playerOptions.appendChild(button);
+
+        const img = document.createElement('img');
+        img.src = './img/' + option + '.svg';
+        button.appendChild(img);
     };
 
     const announce = document.createElement('div');
@@ -294,7 +297,7 @@ function disablePlayerOptions () {
 
 function playRound(e) {
     const computerSelection = getComputerChoice();
-    const playerSelection = this.textContent;
+    const playerSelection = this.id;
 
     const resultObject = checkRoundWinner(playerSelection, computerSelection);
     updateScore(resultObject.winner);

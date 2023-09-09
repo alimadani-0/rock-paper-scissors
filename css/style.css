@@ -46,3 +46,8 @@ body div {
     font-size: 35px;
     padding: 20px;
 }
+
+img {
+    height: auto;
+    width: 200px;
+}
